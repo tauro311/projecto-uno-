@@ -5,9 +5,11 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance; 
-
-    private AudioSource _audioSource; 
-    [SerializeField]private AudioClip _coinAudio; 
+   public AudioSource _audioSource; 
+  public AudioClip coinAudio; 
+   public AudioClip jumpAudio;
+   public AudioClip mimikAudio; 
+   
 
 
 
@@ -25,10 +27,10 @@ public class SoundManager : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
     }
-
-    public void CoinSFX()
+    
+    public void PlaySFX(AudioSource source, AudioClip clip)
     {
-        _audioSource.PlayOneShot(_coinAudio);
-
+      source.PlayOneShot(clip);
     }
+  
 }
