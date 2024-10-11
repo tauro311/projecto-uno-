@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D characterRigidbody;
-    private float horizintalInput; 
+    private float horizontalInput; 
     public static Animator characterAnimator; 
 
 
@@ -35,29 +35,47 @@ public class PlayerController : MonoBehaviour
  
 
     }
-    void Update()
+    void Movement()
     {
-        horizintalInput = Input.GetAxis("Horizontal");
-
-        if(horizintalInput < 0)
+        if(isAttacking && horizontalInput == 0)
         {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-            characterAnimator.SetBool("IsRunning", true);
+            horizontalInput = 0; 
+        }
+        else
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+        }
+        if(horizontalInput < 0)
+        {
+            if(!isAttacking)
+            {
+                transform.rotation = Quaternion.Euler(0,180, 0);
             
-        }
-
-        else if(horizintalInput > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
             characterAnimator.SetBool("IsRunning", true);
+
         }
-        else 
+        else if(horizontalInput > 0)
+        {
+            if(!isAttacking)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            
+            }
+            characterAnimator.SetBool("IsRunning", true);
+
+        }
+        else
         {
             characterAnimator.SetBool("IsRunning", false);
-
         }
+    }
 
-        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded)
+    void Update()
+    {
+        Movement();
+
+        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttacking)
         {
             characterRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             characterAnimator.SetBool("IsRunning", false);
@@ -70,6 +88,13 @@ public class PlayerController : MonoBehaviour
             Attack();
 
         }
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.instance.Pause();
+            
+        }
+        
        
     }
   
@@ -107,19 +132,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        characterRigidbody.velocity = new Vector2(horizintalInput *characterSpeed, characterRigidbody.velocity.y);
+        characterRigidbody.velocity = new Vector2(horizontalInput *characterSpeed, characterRigidbody.velocity.y);
 
 
     }
 
-    void TakeDamage()
+    void TakeDamage(int damage)
     {
-        healthPoints--;
-        characterAnimator.SetTrigger("IsHurt");
-        if(healthPoints == 0)
+        //healthPoints -= damage; 
+
+      
+        if(healthPoints <= 0)
         {
             Die();
             
+        }
+        else
+        {
+            characterAnimator.SetTrigger("IsHurt");
         }
 
     }
@@ -135,8 +165,8 @@ public class PlayerController : MonoBehaviour
         {
             //characterAnimator.SetTrigger("IsHurt");
             //Destroy(gameObject, 0.3f);
-            TakeDamage();
-
+          TakeDamage(1);
+ 
 
         }
     }
