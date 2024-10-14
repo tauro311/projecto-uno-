@@ -85,7 +85,8 @@ public class PlayerController : MonoBehaviour
         }
         if(Input.GetButtonDown("Attack") && GroundSensor.isGrounded && !isAttacking)
         {
-            Attack();
+           // Attack();
+           StratAttack();
 
         }
 
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
     }
   
     
-    void Attack()
+   /* void Attack()
     {
         StartCoroutine(AttackAnimation());
         characterAnimator.SetTrigger("Attack");             
@@ -125,9 +126,41 @@ public class PlayerController : MonoBehaviour
         }
         
     
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         isAttacking = false ; 
+    }*/
+
+    void StratAttack()
+    {
+        isAttacking = true; 
+        characterAnimator.SetTrigger("Attack");
     }
+
+    void Attack()
+    {
+    
+        Collider2D[] collider = Physics2D.OverlapCircleAll(attackiHitBox.position, attackRadius);
+
+        foreach(Collider2D enemy in collider)
+        {
+             if(enemy.gameObject.CompareTag("Mimico"))
+             {
+                  //Destroy(enemy.gameObject);
+                Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
+                enemyRigidbody.AddForce( transform.right + transform.up * 2, ForceMode2D.Impulse);
+                
+                
+             }
+        }
+           
+    }
+
+    void EndAttack()
+    {
+        isAttacking = false;
+
+    }
+
 
     // Update is called once per frame
     void FixedUpdate()
