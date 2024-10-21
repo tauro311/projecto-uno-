@@ -14,10 +14,10 @@ public class Magic : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if(Collider.gameObject.CompareTag("Player"))
+        if(collider.gameObject.CompareTag("Player"))
         {
-            interactible = true
-            GameManager.instance.PlaySFX()
+            interactible = true;
+           SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance.coinAudio);
 
         }
     }

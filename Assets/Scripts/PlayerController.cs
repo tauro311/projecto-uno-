@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpForce = 10f;
 
-    [SerializeField]private int healthPoints = 5; 
+    [SerializeField]private int healthPoints; 
+    [SerializeField]private int maxHealthPoints = 5;
 
     private bool isAttacking; 
     [SerializeField]private Transform attackiHitBox; 
@@ -31,6 +32,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        healthPoints = maxHealthPoints;
+        GameManager.instance.SetHealBar(maxHealthPoints);
       //  characterRigidbody.AddForce(Vector2.up * jumpForce);
  
 
@@ -172,7 +175,8 @@ public class PlayerController : MonoBehaviour
 
     void TakeDamage(int damage)
     {
-        //healthPoints -= damage; 
+        healthPoints -= damage; 
+        GameManager.instance.UpdateHealBar(healthPoints);
 
       
         if(healthPoints <= 0)
@@ -184,6 +188,23 @@ public class PlayerController : MonoBehaviour
         {
             characterAnimator.SetTrigger("IsHurt");
         }
+
+    }
+     public void AtHealth(int health)
+    {
+        healthPoints += health;
+        GameManager.instance.UpdateHealBar(healthPoints);
+
+    }
+    public void Health(int AddHealth)
+    {
+        SoundManager.instance.PlayerSFX(SoundManager.instance,SoundManager.instance._HeathBar);
+        _currentHealth += AddHealth;
+        if(_currentHealth > _maxhealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+        GameManager.instance.UpdateHealBar(_currentHealth);
 
     }
     void Die()
