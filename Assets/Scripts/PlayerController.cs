@@ -193,20 +193,16 @@ public class PlayerController : MonoBehaviour
      public void AtHealth(int health)
     {
         healthPoints += health;
+
+        if(healthPoints < maxHealthPoints)
+        {
+            healthPoints = maxHealthPoints;
+        }
+        
         GameManager.instance.UpdateHealBar(healthPoints);
 
     }
-    public void Health(int AddHealth)
-    {
-        SoundManager.instance.PlayerSFX(SoundManager.instance,SoundManager.instance._HeathBar);
-        _currentHealth += AddHealth;
-        if(_currentHealth > _maxhealth)
-        {
-            _currentHealth = _maxHealth;
-        }
-        GameManager.instance.UpdateHealBar(_currentHealth);
-
-    }
+    
     void Die()
     {
         characterAnimator.SetBool("IsDead", true);

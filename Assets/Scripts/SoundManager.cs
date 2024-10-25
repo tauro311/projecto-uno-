@@ -9,6 +9,8 @@ public class SoundManager : MonoBehaviour
   public AudioClip coinAudio; 
    public AudioClip jumpAudio;
    public AudioClip mimikAudio; 
+   public AudioClip curarse;
+   
    
 
 

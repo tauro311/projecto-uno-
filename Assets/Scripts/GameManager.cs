@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
      }
      float progresoDeCarga;
 
-     IEnumerator LoadAsync()
+     IEnumerator LoadAsync(string SceneName)
      {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneName);
 

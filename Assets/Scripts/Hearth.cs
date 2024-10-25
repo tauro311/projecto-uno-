@@ -15,11 +15,8 @@ public class Hearth : MonoBehaviour
         {
             playerScript = collider.gameObject.GetComponent<PlayerController>();
 
-            if(playerScript._currentHealth <playerScript._maxHealth)
-            {
-                playerScript.Health(1);
-                Destroy(gameObject);
-            }
+            playerScript.AtHealth(1);
+            Destroy(gameObject);
         }
     }
     
